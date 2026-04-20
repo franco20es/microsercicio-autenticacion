@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+  auth-service:
+    build: .
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db-postgres
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-postgres:5432/auth_service_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Jfrc11$$
+      SPRING_DATA_REDIS_HOST: redis
+
+  db-postgres:
+    image: postgres:15
+    container_name: db-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: auth_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Jfrc11$$
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
